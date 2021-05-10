@@ -47,10 +47,10 @@ python -m auth.auth
 
 ## 監視デーモンプロセスを起動する場合  
 ```python
-from get_mail import Monitoring, start
+from get_mail import Monitoring, start_daemon
 
 monitoring = Monitoring('search_word_for_subject', 'file_save_destination', 60) # 60 is check interval(sec.)
-start(monitoring)
+start_daemon(monitoring)
 ```
 
 ## 即時実行のみ行う場合
