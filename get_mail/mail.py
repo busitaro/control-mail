@@ -32,6 +32,9 @@ def observe_mail(monitoring: Monitoring):
         # 添付ファイルの保存
         for message in mails:
             store_attachment_file(message, monitoring.file_out_dir)
+        # 取得時刻を記録する
+        run_time = RunTime(monitoring.search_word)
+        run_time.record()
     except Exception as e:
         logger.critical(str(e))
 
@@ -60,8 +63,8 @@ def get_mail(monitoring: Monitoring):
                 .on_attribute('receivedDateTime').greater_equal(run_time.read())
 
     messages = mailbox.get_messages(query=query, download_attachments=True)
-    # 取得時刻を記録する
-    run_time.record()
+    # # 取得時刻を記録する
+    # run_time.record()
 
     return messages
 
