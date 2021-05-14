@@ -63,8 +63,6 @@ def get_mail(monitoring: Monitoring):
                 .on_attribute('receivedDateTime').greater_equal(run_time.read())
 
     messages = mailbox.get_messages(query=query, download_attachments=True)
-    # # 取得時刻を記録する
-    # run_time.record()
 
     return messages
 
