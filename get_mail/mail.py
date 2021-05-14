@@ -1,5 +1,6 @@
 from O365 import Account, FileSystemTokenBackend
 from os import makedirs
+from os.path import isfile
 
 from .config.config_api import Config
 from .run_time import RunTime
@@ -31,6 +32,9 @@ def observe_mail(monitoring: Monitoring):
         # 添付ファイルの保存
         for message in mails:
             store_attachment_file(message, monitoring.file_out_dir)
+        # 取得時刻を記録する
+        run_time = RunTime(monitoring.search_word)
+        run_time.record()
     except Exception as e:
         logger.critical(str(e))
 
@@ -59,8 +63,6 @@ def get_mail(monitoring: Monitoring):
                 .on_attribute('receivedDateTime').greater_equal(run_time.read())
 
     messages = mailbox.get_messages(query=query, download_attachments=True)
-    # 取得時刻を記録する
-    run_time.record()
 
     return messages
 
@@ -75,4 +77,37 @@ def store_attachment_file(message, path: str):
     path: 保存先
     """
     for attachment in message.attachments:
-        attachment.save(path)
+        attachment.save(path, custom_name=make_store_name(attachment.name, path))
+
+
+def make_store_name(attachment_name: str, path: str):
+    """
+    添付ファイルの保存名を作成する
+
+    Params
+    ------
+    attachment_name: str
+        添付ファイル名
+    path: str
+        保存先パス
+
+    Returns
+    -------
+    0: 保存ファイル名
+    """
+    if isfile('{}/{}'.format(path, attachment_name)):
+        # 同名ファイルが存在した場合
+
+        # ファイル名の後ろに "_連番" を付与する
+        underbar_split = attachment_name.split('_')
+        base_name, suffix_num = '_'.join(underbar_split[:-1]), underbar_split[-1]
+
+        # _連番を付けた上で、再度同名ファイルの存在チェック
+        if suffix_num.isdecimal():
+            suffix_num = str(int(suffix_num) + 1)
+        else:
+            suffix_num = '1'
+        store_name = make_store_name('{}_{}'.format(base_name, suffix_num), path)
+    else:
+        store_name = attachment_name
+    return store_name
