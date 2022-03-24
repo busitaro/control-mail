@@ -2,11 +2,11 @@ from O365 import Account, FileSystemTokenBackend
 from os import makedirs
 from os.path import isfile
 
-from config import Config
-from data import Monitoring
+from ..config import Config
+from ..data import Monitoring
+from ..logger import Logger
 from .run_time import RunTime
 from .interface import Logic
-from .logger import Logger
 
 
 class AttachmentLogic(Logic):
@@ -43,7 +43,7 @@ class AttachmentLogic(Logic):
         except Exception as e:
             logger.critical(str(e))
 
-    def __daemonize(self):
+    def daemonize(self):
         return self.__daemonize
 
     def __get_mail(self, monitoring: Monitoring):

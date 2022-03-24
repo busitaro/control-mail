@@ -1,7 +1,7 @@
 from abc import ABCMeta
 from abc import abstractmethod
 
-from .monitoring import Monitoring
+from ..data import Monitoring
 
 
 class Logic(metaclass=ABCMeta):

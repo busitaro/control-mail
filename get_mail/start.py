@@ -2,10 +2,10 @@ from concurrent.futures import ThreadPoolExecutor
 from injector import Injector
 from injector import inject
 
-from data import Monitoring
+from .data import Monitoring
 from .daemon import check
-from logic import Logic
-from logic import LogicDiModule
+from .logic import Logic
+from .logic import LogicDiModule
 
 
 executor = ThreadPoolExecutor(thread_name_prefix='thread')
@@ -25,7 +25,7 @@ class Start:
         monitoring: Monitoring
             監視設定オブジェクト
         """
-        if self.__logic.daemonize:
+        if self.__logic.daemonize():
             # デーモンスレッドの開始
             executor.submit(
                 check,
@@ -33,7 +33,7 @@ class Start:
                 exec=self.__logic.exec
             )
         else:
-            self.__logic.exec()
+            return self.__logic.exec(monitoring)
 
 
 def start(monitoring: Monitoring, mode: str, daemonize: bool = False):
