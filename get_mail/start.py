@@ -25,7 +25,7 @@ class Start:
         monitoring: Monitoring
             監視設定オブジェクト
         """
-        if self.__logic.daemonize:
+        if self.__logic.daemonize():
             # デーモンスレッドの開始
             executor.submit(
                 check,
@@ -33,7 +33,7 @@ class Start:
                 exec=self.__logic.exec
             )
         else:
-            self.__logic.exec()
+            return self.__logic.exec(monitoring)
 
 
 def start(monitoring: Monitoring, mode: str, daemonize: bool = False):
