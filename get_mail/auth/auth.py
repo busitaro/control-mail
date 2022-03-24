@@ -9,11 +9,11 @@ def main():
 
     """
     config = Config()
-    credentials = (config.get_client_id(), config.get_client_secret())
+    credentials = (config.client_id, config.client_secret)
     token_backend = \
         FileSystemTokenBackend(
-            token_path=config.get_token_path(),
-            token_filename=config.get_token_file()
+            token_path=config.token_path,
+            token_filename=config.token_file
         )
     account = Account(credentials, token_backend=token_backend)
     if account.authenticate(scopes=['basic', 'message_all']):
