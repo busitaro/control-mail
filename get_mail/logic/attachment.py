@@ -43,7 +43,7 @@ class AttachmentLogic(Logic):
         except Exception as e:
             logger.critical(str(e))
 
-    def __daemonize(self):
+    def daemonize(self):
         return self.__daemonize
 
     def __get_mail(self, monitoring: Monitoring):
