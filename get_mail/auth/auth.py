@@ -1,5 +1,6 @@
 from O365 import Account, FileSystemTokenBackend
-from ..config.config_api import Config
+
+from ..config import Config
 
 
 def main():

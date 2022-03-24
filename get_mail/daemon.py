@@ -1,7 +1,7 @@
 import time
 from typing import Callable
 
-from data import Monitoring
+from .data import Monitoring
 
 
 def check(monitoring: Monitoring, exec: Callable[[Monitoring], None]):

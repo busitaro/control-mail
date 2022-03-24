@@ -2,11 +2,11 @@ from O365 import Account, FileSystemTokenBackend
 from os import makedirs
 from os.path import isfile
 
-from config import Config
-from data import Monitoring
+from ..config import Config
+from ..data import Monitoring
+from ..logger import Logger
 from .run_time import RunTime
 from .interface import Logic
-from .logger import Logger
 
 
 class AttachmentLogic(Logic):

@@ -1,4 +1,8 @@
-from logging import getLogger, FileHandler, StreamHandler, Formatter, DEBUG
+from logging import getLogger
+from logging import FileHandler
+from logging import StreamHandler
+from logging import Formatter
+from logging import DEBUG
 import os
 
 
