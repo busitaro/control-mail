@@ -5,14 +5,19 @@ import errno
 file_path = 'conf'
 config_file = 'api.ini'
 
+
 class Config():
     def __init__(self):
         path_to_config_file = '{}/{}'.format(file_path, config_file)
         if not os.path.exists(path_to_config_file):
-            raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), path_to_config_file)
+            raise FileNotFoundError(
+                errno.ENOENT,
+                os.strerror(errno.ENOENT),
+                path_to_config_file
+            )
         self.__parser = configparser.ConfigParser()
         self.__parser.read(path_to_config_file, encoding='utf_8')
-    
+
     @property
     def client_id(self):
         section = 'DEFAULT'

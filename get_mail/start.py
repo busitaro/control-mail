@@ -1,6 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor
 
-from .monitoring import Monitoring
+from data import Monitoring
 from .daemon import check
 
 
