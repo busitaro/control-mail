@@ -22,6 +22,7 @@ logger.addHandler(stream_handler)
 # 子loggerを保持する辞書
 logger_dict = dict()
 
+
 class Logger:
     def __init__(self, name: str):
         """
