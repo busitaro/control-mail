@@ -1,7 +1,7 @@
 import time
 
-from .monitoring import Monitoring
-from .mail import observe_mail
+from data import Monitoring
+from logic import observe_mail
 
 
 def check(monitoring: Monitoring):
