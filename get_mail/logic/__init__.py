@@ -1,1 +1,2 @@
-from .attachment import observe_mail
+from .interface import Logic
+from .di import LogicDiModule
