@@ -6,6 +6,7 @@ from .daemon import check
 
 executor = ThreadPoolExecutor(thread_name_prefix='thread')
 
+
 def start_daemon(monitoring: Monitoring):
     """
     デーモンプロセスを別スレッドで起動する
