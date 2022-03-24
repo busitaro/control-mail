@@ -9,6 +9,11 @@ class Monitoring:
     """
     search_word: str
     """
+    検索対象のディレクトリ
+    階層をリストで表現する
+    """
+    search_directory: list
+    """
     添付ファイル出力先ディレクトリ
     """
     file_out_dir: str
