@@ -6,7 +6,6 @@ from O365 import FileSystemTokenBackend
 
 from .interface import Logic
 from .forward_config import ForwardConfig
-from ..config import Config
 from ..data import Monitoring
 from ..logger import Logger
 
@@ -46,14 +45,12 @@ class ForwardLogic(Logic):
         メールボックスを取得する
 
         """
-        config = Config()
-
         # メールボックスへの接続
-        credentials = (config.client_id, config.client_secret)
+        credentials = (monitoring.client_id, monitoring.client_secret)
         token_backend = \
             FileSystemTokenBackend(
-                token_path=config.token_path,
-                token_filename=config.token_file
+                token_path=monitoring.token_path,
+                token_filename=monitoring.token_file
             )
         account = Account(credentials, token_backend=token_backend)
         mailbox = account.mailbox()

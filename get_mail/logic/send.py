@@ -6,7 +6,6 @@ from O365 import FileSystemTokenBackend
 
 from .interface import Logic
 from .send_config import SendConfig
-from ..config import Config
 from ..data import Monitoring
 from ..logger import Logger
 
@@ -20,7 +19,7 @@ class SendLogic(Logic):
         logger.info('exec send')
 
         all_address = self.__s_config.get_all_address()
-        mailbox = self.__get_mailbox()
+        mailbox = self.__get_mailbox(monitoring)
 
         for address in all_address:
             message = mailbox.new_message()
@@ -36,19 +35,17 @@ class SendLogic(Logic):
     def daemonize(self):
         return False
 
-    def __get_mailbox(self):
+    def __get_mailbox(self, monitoring: Monitoring):
         """
         メールボックスを取得する
 
         """
-        config = Config()
-
         # メールボックスへの接続
-        credentials = (config.client_id, config.client_secret)
+        credentials = (monitoring.client_id, monitoring.client_secret)
         token_backend = \
             FileSystemTokenBackend(
-                token_path=config.token_path,
-                token_filename=config.token_file
+                token_path=monitoring.token_path,
+                token_filename=monitoring.token_file
             )
         account = Account(credentials, token_backend=token_backend)
         mailbox = account.mailbox()

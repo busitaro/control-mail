@@ -2,7 +2,6 @@ from O365 import Account, FileSystemTokenBackend
 from os import makedirs
 from os.path import isfile
 
-from ..config import Config
 from ..data import Monitoring
 from ..logger import Logger
 from .run_time import RunTime
@@ -55,15 +54,14 @@ class AttachmentLogic(Logic):
         monitoring: Monitoring
             監視設定オブジェクト
         """
-        config = Config()
         run_time = RunTime(monitoring.search_word)
 
         # メールボックスへの接続
-        credentials = (config.client_id, config.client_secret)
+        credentials = (monitoring.client_id, monitoring.client_secret)
         token_backend = \
             FileSystemTokenBackend(
-                token_path=config.token_path,
-                token_filename=config.token_file
+                token_path=monitoring.token_path,
+                token_filename=monitoring.token_file
             )
         account = Account(credentials, token_backend=token_backend)
         mailbox = account.mailbox()
