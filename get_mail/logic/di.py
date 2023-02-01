@@ -3,6 +3,7 @@ from injector import Module
 from .interface import Logic
 from .attachment import AttachmentLogic
 from .forward import ForwardLogic
+from .send import SendLogic
 
 
 class LogicDiModule(Module):
@@ -13,7 +14,9 @@ class LogicDiModule(Module):
     def configure(self, binder):
         if self.__mode == 'attachment':
             binder.bind(Logic, to=AttachmentLogic(self.__daemonize))
-        if self.__mode == 'forward':
+        elif self.__mode == 'forward':
             binder.bind(Logic, to=ForwardLogic(self.__daemonize))
+        elif self.__mode == 'send':
+            binder.bind(Logic, to=SendLogic())
         else:
             raise ValueError('指定されたモードが存在しません')
