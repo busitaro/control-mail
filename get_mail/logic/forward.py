@@ -5,8 +5,6 @@ from O365 import Account
 from O365 import FileSystemTokenBackend
 
 from .interface import Logic
-from .forward_config import ForwardConfig
-from ..config import Config
 from ..data import Monitoring
 from ..logger import Logger
 
@@ -14,22 +12,25 @@ from ..logger import Logger
 class ForwardLogic(Logic):
     def __init__(self, daemonize: bool):
         self.__daemonize = daemonize
-        self.__f_config = ForwardConfig()
 
     def exec(self, monitoring: Monitoring):
         logger = Logger(monitoring.search_word)
         logger.info('exec forward')
-        all_ids = self.__f_config.get_all_id()
-        mailbox = self.__get_mailbox(monitoring)
-        mails = self.__get_mail(mailbox, monitoring)
 
+        # 検索対象のメール
+        mails = \
+            self.__get_mail(
+                self.__get_mailbox(monitoring),
+                monitoring
+            )
+
+        # 転送の実施
         for mail in mails:
-            for id in all_ids:
-                if id in mail.body:
-                    address = self.__get_send_address(id)
+            for (address, word) in monitoring.forward_address_words:
+                # 検索対象文字列がメール内容に含まれていた場合
+                if word in mail.body:
                     send_mail = mail.forward()
                     send_mail.to.add(address)
-                    print(id)
                     logger.info(
                         'address: {}, subject: {}'.format(
                             address,
@@ -46,14 +47,12 @@ class ForwardLogic(Logic):
         メールボックスを取得する
 
         """
-        config = Config()
-
         # メールボックスへの接続
-        credentials = (config.client_id, config.client_secret)
+        credentials = (monitoring.client_id, monitoring.client_secret)
         token_backend = \
             FileSystemTokenBackend(
-                token_path=config.token_path,
-                token_filename=config.token_file
+                token_path=monitoring.token_path,
+                token_filename=monitoring.token_file
             )
         account = Account(credentials, token_backend=token_backend)
         mailbox = account.mailbox()
@@ -82,11 +81,3 @@ class ForwardLogic(Logic):
         messages = mailbox.get_messages(query=query, limit=100)
 
         return messages
-
-    def __get_send_address(self, id: str):
-        address = ''
-        try:
-            address = self.__f_config.get_address_by_id(id)
-        except ValueError:
-            pass
-        return address

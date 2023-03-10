@@ -1,19 +1,19 @@
-from O365 import Account, FileSystemTokenBackend
+from sys import argv
 
-from ..config import Config
+from O365 import Account
+from O365 import FileSystemTokenBackend
 
 
-def main():
+def main(client_id: str, client_secret: str):
     """
     認証を行う
 
     """
-    config = Config()
-    credentials = (config.client_id, config.client_secret)
+    credentials = (client_id, client_secret)
     token_backend = \
         FileSystemTokenBackend(
-            token_path=config.token_path,
-            token_filename=config.token_file
+            token_path='.',
+            token_filename='token.json'
         )
     account = Account(credentials, token_backend=token_backend)
     if account.authenticate(scopes=['basic', 'message_all']):
@@ -21,4 +21,10 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if len(argv) != 3:
+        raise ValueError('insufficent params')
+
+    client_id = argv[1]
+    client_secret = argv[2]
+
+    main(client_id, client_secret)

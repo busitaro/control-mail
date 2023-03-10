@@ -1,54 +1,50 @@
-from datetime import datetime
-from datetime import timedelta
-
 from O365 import Account
 from O365 import FileSystemTokenBackend
 
 from .interface import Logic
-from .send_config import SendConfig
-from ..config import Config
 from ..data import Monitoring
 from ..logger import Logger
 
 
 class SendLogic(Logic):
-    def __init__(self):
-        self.__s_config = SendConfig()
-
     def exec(self, monitoring: Monitoring):
         logger = Logger(monitoring.search_word)
         logger.info('exec send')
 
-        all_address = self.__s_config.get_all_address()
-        mailbox = self.__get_mailbox()
+        mailbox = self.__get_mailbox(monitoring)
 
-        for address in all_address:
+        for index, address in enumerate(monitoring.send_to_list):
             message = mailbox.new_message()
+            # 宛先
             message.to.add(address)
+            # 件名
             message.subject = monitoring.send_subject
+            # テンプレート文字列を置き換え
+            replace_dict = dict()
+            for key, value in monitoring.send_values.items():
+                replace_dict[key] = value[index]
             message.body = \
                 monitoring.send_body.format(
-                    self.__s_config.get_key_by_address(address)
+                    **replace_dict
                 )
+            # 送信の実行
             logger.info('send mail to: {}'.format(address))
             message.send()
 
     def daemonize(self):
         return False
 
-    def __get_mailbox(self):
+    def __get_mailbox(self, monitoring: Monitoring):
         """
         メールボックスを取得する
 
         """
-        config = Config()
-
         # メールボックスへの接続
-        credentials = (config.client_id, config.client_secret)
+        credentials = (monitoring.client_id, monitoring.client_secret)
         token_backend = \
             FileSystemTokenBackend(
-                token_path=config.token_path,
-                token_filename=config.token_file
+                token_path=monitoring.token_path,
+                token_filename=monitoring.token_file
             )
         account = Account(credentials, token_backend=token_backend)
         mailbox = account.mailbox()
