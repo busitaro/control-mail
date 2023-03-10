@@ -5,7 +5,6 @@ from O365 import Account
 from O365 import FileSystemTokenBackend
 
 from .interface import Logic
-from .forward_config import ForwardConfig
 from ..data import Monitoring
 from ..logger import Logger
 
