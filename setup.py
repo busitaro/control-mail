@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 
 DESCRIPTION = "control mail of microsoft365"
-NAME = 'control-mailr'
+NAME = 'control_mail'
 AUTHOR = 'busitaro10'
 AUTHOR_EMAIL = 'busitaro10@gmail.com'
 URL = 'https://github.com/busitaro/control-mail'
