@@ -1,4 +1,4 @@
-# get_mail
+# control_mail
 
 Office365 の Exchange メールサーバ上のメールを操作します。
 
@@ -46,8 +46,8 @@ python -m auth.auth client_id client_secret
 指定文字列の含まれるメールを指定アドレスへ転送する
 
 ```python
-from get_mail import Monitoring
-from get_mail import start
+from control_mail import Monitoring
+from control_mail import start
 
 monitoring = \
     Monitoring(
@@ -67,8 +67,8 @@ start(monitoring, 'forward')
 メールを送信する
 
 ```python
-from get_mail import Monitoring
-from get_mail import start
+from control_mail import Monitoring
+from control_mail import start
 
 monitoring = \
     Monitoring(
