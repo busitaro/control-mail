@@ -46,6 +46,11 @@ class Monitoring:
     period: int = -1
 
     """
+    送信メール宛先
+    """
+    send_to_list: list = dataclasses.field(default_factory=list)
+
+    """
     送信メール件名
     """
     send_subject: str = ''
@@ -54,6 +59,15 @@ class Monitoring:
     送信メール内容
     """
     send_body: str = ''
+
+    """
+    送信メール置き換え内容
+    {
+        'keyword1': [to1_value1, to2_value1, ...],
+        'keyword2': [to1_value2, to2_value2, ...]
+    }
+    """
+    send_values: dict = dataclasses.field(default_factory=dict)
 
     """
     転送設定

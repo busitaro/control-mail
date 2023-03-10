@@ -79,7 +79,33 @@ monitoring = \
         search_directory=['inbox', 'folder']
     )
 
-start(monitoring, 'forward', daemonize)
+start(monitoring, 'forward')
+```
+
+### send
+
+メールを送信する
+
+```python
+from get_mail import Monitoring
+from get_mail import start
+
+monitoring = \
+    Monitoring(
+        client_id='your client id',
+        client_secret='your client secret',
+        token_path='path to m365 token file',
+        token_file='file name of m365 token file',
+        send_subject='subject of mail',
+        send_to_list=['to1@hi-chubu.co.jp', 'to2@hi-chubu.co.jp'],
+        send_body='mail body: {keyword1}: {keyword2}'
+        send_values={
+            'keyword1': ['to1_value1', 'to2_value1'],
+            'keyword2': ['to1_value2', 'to2_value2'],
+        }
+    )
+
+start(monitoring, 'send')
 ```
 
 # Author
