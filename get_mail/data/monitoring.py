@@ -54,3 +54,8 @@ class Monitoring:
     送信メール内容
     """
     send_body: str = ''
+
+    """
+    転送設定
+    """
+    forward_address_words: list = dataclasses.field(default_factory=list)
