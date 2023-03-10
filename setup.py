@@ -8,13 +8,15 @@ AUTHOR = 'busitaro10'
 AUTHOR_EMAIL = 'busitaro10@gmail.com'
 URL = 'https://github.com/busitaro/control-mail'
 DOWNLOAD_URL = 'https://github.com/busitaro/control-mail'
-VERSION = 0.1
+VERSION = 0.2
 
 INSTALL_REQUIRES = [
     'beautifulsoup4>=4.9.3',
     'certifi>=2020.12.5',
     'chardet>=4.0.0',
     'idna>=2.10',
+    'injector>=0.19.0',
+    'lxml>=4.9.2',
     'O365>=2.0.14',
     'oauthlib>=3.1.0',
     'python-dateutil>=2.8.1',

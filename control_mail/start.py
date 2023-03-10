@@ -49,4 +49,4 @@ def start(monitoring: Monitoring, mode: str, daemonize: bool = False):
     """
     injector = Injector([LogicDiModule(mode, daemonize)])
     start = injector.get(Start)
-    start.start(monitoring)
+    return start.start(monitoring)

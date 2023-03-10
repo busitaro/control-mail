@@ -40,6 +40,7 @@ python -m auth.auth client_id client_secret
 | attachment | 添付ファイルを取得する |
 | forward    | メールを転送する       |
 | send       | 新規メールを送信する   |
+| get_mail   | メール内容を取得する   |
 
 ### forward
 
@@ -86,6 +87,29 @@ monitoring = \
     )
 
 start(monitoring, 'send')
+```
+
+### get_mail
+
+メール内容を取得する
+
+```python
+from datetime import datetime
+
+from control_mail import Monitoring
+from control_mail import start
+
+monitoring = \
+    Monitoring(
+        client_id='your client id',
+        client_secret='your client secret',
+        token_path='path to m365 token file',
+        token_file='file name of m365 token file',
+        search_word='suject search word',
+        search_datetime_from=datetime(2020, 1, 1),
+    )
+
+message = start(monitoring, 'get_mail')
 ```
 
 # Author
