@@ -1,5 +1,8 @@
 import dataclasses
 
+from datetime import datetime
+from datetime import timedelta
+
 
 @dataclasses.dataclass
 class Monitoring:
@@ -34,6 +37,11 @@ class Monitoring:
     階層をリストで表現する
     """
     search_directory: list = dataclasses.field(default_factory=list)
+
+    """
+    検索を開始する時間
+    """
+    search_datetime_from: datetime = datetime.now() - timedelta(minutes=5)
 
     """
     添付ファイル出力先ディレクトリ

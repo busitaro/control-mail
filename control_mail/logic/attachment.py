@@ -1,4 +1,3 @@
-from O365 import Account, FileSystemTokenBackend
 from os import makedirs
 from os.path import isfile
 
@@ -6,6 +5,7 @@ from ..data import Monitoring
 from ..logger import Logger
 from .run_time import RunTime
 from .interface import Logic
+from .control import get_mail
 
 
 class AttachmentLogic(Logic):
@@ -28,7 +28,8 @@ class AttachmentLogic(Logic):
         logger = Logger(monitoring.search_word)
         try:
             # mailの取得
-            mails = list(self.__get_mail(monitoring))
+            run_time = RunTime(monitoring.search_word)
+            mails = get_mail(monitoring, run_time.read())
             # ログ出力
             logger.info('check mails :count => {}'.format(len(mails)))
             # 添付ファイルの保存先作成
@@ -44,37 +45,6 @@ class AttachmentLogic(Logic):
 
     def daemonize(self):
         return self.__daemonize
-
-    def __get_mail(self, monitoring: Monitoring):
-        """
-        メールを取得する
-
-        Params
-        ------
-        monitoring: Monitoring
-            監視設定オブジェクト
-        """
-        run_time = RunTime(monitoring.search_word)
-
-        # メールボックスへの接続
-        credentials = (monitoring.client_id, monitoring.client_secret)
-        token_backend = \
-            FileSystemTokenBackend(
-                token_path=monitoring.token_path,
-                token_filename=monitoring.token_file
-            )
-        account = Account(credentials, token_backend=token_backend)
-        mailbox = account.mailbox()
-        # 件名と時刻でメールを絞り込む
-        query = mailbox.new_query() \
-            .on_attribute('subject') \
-            .contains(monitoring.search_word) \
-            .on_attribute('receivedDateTime') \
-            .greater_equal(run_time.read())
-
-        messages = mailbox.get_messages(query=query, download_attachments=True)
-
-        return messages
 
     def __store_attachment_file(self, message, path: str):
         """
